@@ -1,0 +1,29 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateModelsTable extends Migration
+{
+    public function up()
+    {
+        Schema::create('models', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->foreignId('segment_id')->constrained()->onDelete('cascade');
+            $table->string('name')->unique();
+            $table->string('slug')->unique();
+            $table->tinyInteger('status')->default(1); // 0: Inactive, 1: Active
+            $table->foreignId('created_by')->nullable();
+            $table->foreignId('updated_by')->nullable();
+            $table->foreignId('deleted_by')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('models');
+    }
+}
